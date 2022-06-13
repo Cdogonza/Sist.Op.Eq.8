@@ -90,7 +90,6 @@ public class Procesar extends javax.swing.JFrame {
         jLPorcentajeProceso = new javax.swing.JTextField();
         jLNumeroProceso = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        SetPrioridad = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -299,14 +298,6 @@ public class Procesar extends javax.swing.JFrame {
         jLabel7.setText("Proceso");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, -1, -1));
 
-        SetPrioridad.setText("Set Prioridad");
-        SetPrioridad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SetPrioridadActionPerformed(evt);
-            }
-        });
-        jPanel1.add(SetPrioridad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, -1, -1));
-
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/red puntos.png"))); // NOI18N
         jLabel8.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel8.setMinimumSize(new java.awt.Dimension(100, 100));
@@ -441,10 +432,6 @@ public class Procesar extends javax.swing.JFrame {
             jTIngresos.setValueAt("Listo", Integer.parseInt(numeroProceso) - 1, 4);
         }
     }//GEN-LAST:event_blockear1ActionPerformed
-
-    private void SetPrioridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetPrioridadActionPerformed
-
-    }//GEN-LAST:event_SetPrioridadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -706,7 +693,6 @@ public class Procesar extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton SetPrioridad;
     private javax.swing.JTextField block;
     private javax.swing.JButton blockear;
     private javax.swing.JButton blockear1;
