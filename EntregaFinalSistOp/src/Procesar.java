@@ -41,7 +41,6 @@ public class Procesar extends javax.swing.JFrame {
     static int CantProcesos;//Cantidad de Procesos
     Random rnd = new Random();
 
-
     public Procesar() {
         initComponents();
         redimensionar();
@@ -149,7 +148,15 @@ public class Procesar extends javax.swing.JFrame {
             new String [] {
                 "#Proceso", "Prioridad", "Rafaga", "Quantum", "ResiduoRafaga", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTIngresos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTIngresosMouseClicked(evt);
@@ -318,7 +325,7 @@ public class Procesar extends javax.swing.JFrame {
     public void tamanioBloqueadosES() {
         String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo(".\\src\\Procesos.txt");
         int cantProcesosBloc = 0;
-        int contProcesosprior=0;
+        int contProcesosprior = 0;
         for (String string : clavesInsertar) {
             String proceso[] = new String[2];
             proceso = string.split(",");
@@ -330,10 +337,11 @@ public class Procesar extends javax.swing.JFrame {
         listaProcesosBloqueados = new int[cantProcesosBloc];
         listaProcesosPrioridad = new int[contProcesosprior];
     }
-    public void redimensionar(){
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();        
-        this.setSize( screenSize.width, screenSize.height);
-        
+
+    public void redimensionar() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(screenSize.width, screenSize.height);
+
     }
     private void jBAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarActionPerformed
         if (jTFCapturaQuantum.getText().isEmpty()) {
@@ -397,21 +405,33 @@ public class Procesar extends javax.swing.JFrame {
     }//GEN-LAST:event_jLPorcentajeProcesoActionPerformed
 
     private void jTIngresosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTIngresosMouseClicked
-//        Dormir();
-        int row = jTIngresos.getSelectedRow();
-        System.out.println(row);
-        String id = String.valueOf(jTIngresos.getValueAt(row, 0));
-        block.setText(id);
+        if (evt.getClickCount() == 1) {
+            int row = jTIngresos.getSelectedRow();
+            String id = String.valueOf(jTIngresos.getValueAt(row, 0));
+            block.setText(id);
+        }
+        if (evt.getClickCount() == 2) {
+            String prioridadPrevia = block.getText();
+            String proximaPrioridad = JOptionPane.showInputDialog("Coloque una prioridad al proceso, maximo "
+                    + listaProcesosPrioridad.length);
+            if (Integer.parseInt(proximaPrioridad) > listaProcesosPrioridad.length) {
+                JOptionPane.showMessageDialog(null, "Ha ingresado un numero de proceso erroneo, ingrese uno valido", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                jTIngresos.setValueAt(proximaPrioridad, Integer.parseInt(prioridadPrevia) - 1, 1);
+                jTIngresos.setValueAt(prioridadPrevia, Integer.parseInt(proximaPrioridad) - 1, 1);
+            }
+
+        }
+
     }//GEN-LAST:event_jTIngresosMouseClicked
 
     private void blockearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockearActionPerformed
         Dormir();
         String numeroProceso = block.getText();
         jTIngresos.setValueAt("Bloqueado", Integer.parseInt(numeroProceso) - 1, 4);
-        
-        
-     
-        
+
+
     }//GEN-LAST:event_blockearActionPerformed
 
     private void blockear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockear1ActionPerformed
@@ -423,12 +443,7 @@ public class Procesar extends javax.swing.JFrame {
     }//GEN-LAST:event_blockear1ActionPerformed
 
     private void SetPrioridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetPrioridadActionPerformed
-    //    String prioridadPrevia = block.getText();
-    //    String proximaPrioridad = JOptionPane.showInputDialog("Coloque una prioridad al proceso, maximo "+
-     //           listaProcesosPrioridad.length);
-     //   jTIngresos.setValueAt(proximaPrioridad, Integer.parseInt(prioridadPrevia)-1, 1);
-     //   jTIngresos.setValueAt(prioridadPrevia, Integer.parseInt(proximaPrioridad)-1, 1);
-        
+
     }//GEN-LAST:event_SetPrioridadActionPerformed
 
     /**
@@ -473,15 +488,15 @@ public class Procesar extends javax.swing.JFrame {
         public void run() {
             while (true) {
                 while (bloquear) {
-                    tiempoInicio = System.currentTimeMillis();                   
-                    tiempoFin = (int)(rnd.nextDouble() * 6500 + 3000);                   
-                    if (tiempoInicio - tiempoBase >= tiempoFin) {                       
+                    tiempoInicio = System.currentTimeMillis();
+                    tiempoFin = (int) (rnd.nextDouble() * 6500 + 3000);
+                    if (tiempoInicio - tiempoBase >= tiempoFin) {
                         bloqueoEntradaSalida();
                     }
-                }              
-                while (desbloquear) {                    
+                }
+                while (desbloquear) {
                     tiempoInicio = System.currentTimeMillis();
-                    tiempoFin = (int)(rnd.nextDouble() * 6500 + 3000);                   
+                    tiempoFin = (int) (rnd.nextDouble() * 6500 + 3000);
                     if (tiempoInicio - tiempoBase >= tiempoFin) {
                         desbloqueoEntradaSalida();
                     }
@@ -498,23 +513,23 @@ public class Procesar extends javax.swing.JFrame {
             int estado = 1; //Estado de while que indica si se puede seguir o no
             int i = 0; // contador de while
             Grafica grafica = new Grafica();
-            
+
             while (estado != 0) {
                 while (i < Contador) { //Recorrer las filas
                     Cargar(i);
                     if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum && jTIngresos.getValueAt(i, 4) != "Bloqueado") { //Ejecutando Procesos
                         for (int c = 1; c <= Quantum; c++) {
-                            if(jTIngresos.getValueAt(i, 4)!= "Bloqueado"){
-                                                       
-                            grafica.Dibujar(i, jPanel2,LargoTotalTabla, CantProcesos);
-                            jTIngresos.setValueAt("Procesando", i, 4);
-                            ResiduoRafaga--;
-                            Barra(Rafaga, ResiduoRafaga);
-                            Pintar();
-                            jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
-                            TiempoProceso++;
-                            Dormir();
-                             }
+                            if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+
+                                grafica.Dibujar(i, jPanel2, LargoTotalTabla, CantProcesos);
+                                jTIngresos.setValueAt("Procesando", i, 4);
+                                ResiduoRafaga--;
+                                Barra(Rafaga, ResiduoRafaga);
+                                Pintar();
+                                jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
+                                TiempoProceso++;
+                                Dormir();
+                            }
                         }
                         jTIngresos.setValueAt("Espera", i, 4);
                         if (ResiduoRafaga == 0) {
@@ -527,18 +542,17 @@ public class Procesar extends javax.swing.JFrame {
                     } else {
                         if (ResiduoRafaga > 0 && Quantum != 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
                             while (ResiduoRafaga > 0) {
-                                if(jTIngresos.getValueAt(i, 4) != "Bloqueado"){
-                                 
-                               
-                                grafica.Dibujar(i, jPanel2,LargoTotalTabla, CantProcesos );
-                                jTIngresos.setValueAt("Procesando", i, 4);
-                                ResiduoRafaga--;
-                                Barra(Rafaga, ResiduoRafaga);
-                                Pintar();
-                                jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
-                                TiempoProceso++;
-                                Dormir();
-                                 }
+                                if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+
+                                    grafica.Dibujar(i, jPanel2, LargoTotalTabla, CantProcesos);
+                                    jTIngresos.setValueAt("Procesando", i, 4);
+                                    ResiduoRafaga--;
+                                    Barra(Rafaga, ResiduoRafaga);
+                                    Pintar();
+                                    jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
+                                    TiempoProceso++;
+                                    Dormir();
+                                }
                             }
                             jTIngresos.setValueAt("Espera", i, 4);
                             if (ResiduoRafaga == 0 && Quantum != 0) {
@@ -551,7 +565,7 @@ public class Procesar extends javax.swing.JFrame {
                         } else {
                             if (ResiduoRafaga == 0 && Quantum != 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
                                 jTIngresos.setValueAt("Terminado", i, 4);
-                                
+
                                 Pintar();
                                 Informe(i);
                                 Borrar(i);
@@ -574,32 +588,30 @@ public class Procesar extends javax.swing.JFrame {
     }
 
     public void bloqueoEntradaSalida() {
-        
+
         for (int listaProcesosBloqueado : listaProcesosBloqueados) {
-           int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));          
-            if(listaProcesosBloqueado!=0 && raf>0){
-                 jTIngresos.setValueAt("Bloqueado", listaProcesosBloqueado - 1, 4);
+            int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));
+            if (listaProcesosBloqueado != 0 && raf > 0) {
+                jTIngresos.setValueAt("Bloqueado", listaProcesosBloqueado - 1, 4);
             }
-           
+
         }
         tiempoBase = System.currentTimeMillis();
-        bloquear = false;       
+        bloquear = false;
         desbloquear = true;
-
 
     }
 
     public void desbloqueoEntradaSalida() {
         for (int listaProcesosBloqueado : listaProcesosBloqueados) {
             int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));
-            if(listaProcesosBloqueado!=0&& raf>0){
-            jTIngresos.setValueAt("Listo", listaProcesosBloqueado - 1, 4);
+            if (listaProcesosBloqueado != 0 && raf > 0) {
+                jTIngresos.setValueAt("Listo", listaProcesosBloqueado - 1, 4);
             }
         }
         tiempoBase = System.currentTimeMillis();
         bloquear = true;
         desbloquear = false;
-
 
     }
 
@@ -611,27 +623,26 @@ public class Procesar extends javax.swing.JFrame {
         }
 
     }
-    
 
     public void Cargar(int i) { //Carga los valores de la Tabla
 
-        if(jTIngresos.getValueAt(i, 4) != "Bloqueado"){
-         
-        NProceso = (int) jTIngresos.getValueAt(i, 0);
-        Rafaga = parseInt((String) (jTIngresos.getValueAt(i, 1)));
-        Quantum = parseInt((String) (jTIngresos.getValueAt(i, 2)));
-        ResiduoRafaga = parseInt((String) (jTIngresos.getValueAt(i, 3)));
-        if (NProceso > 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
-            jLNumeroProceso.setText(String.valueOf(NProceso));
+        if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+
+            NProceso = (int) jTIngresos.getValueAt(i, 0);
+            Rafaga = parseInt((String) (jTIngresos.getValueAt(i, 1)));
+            Quantum = parseInt((String) (jTIngresos.getValueAt(i, 2)));
+            ResiduoRafaga = parseInt((String) (jTIngresos.getValueAt(i, 3)));
+            if (NProceso > 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+                jLNumeroProceso.setText(String.valueOf(NProceso));
+            }
         }
-         }
 
     }
 
     public void Ingresar(String numeroProceso, String rafaga) { //Ingresar proceso a la tabla
 
         DefaultTableModel modelo = (DefaultTableModel) jTIngresos.getModel();
-        Contador++;        
+        Contador++;
         Object[] miTabla = new Object[6];
         miTabla[0] = Contador;
         miTabla[1] = Contador;
@@ -643,7 +654,6 @@ public class Procesar extends javax.swing.JFrame {
         miTabla[5] = "Listo";
         modelo.addRow(miTabla);
         jTIngresos.setModel(modelo);
-        
 
     }
 
@@ -669,9 +679,8 @@ public class Procesar extends javax.swing.JFrame {
         jTIngresos.setValueAt("0", c, 2);
         jTIngresos.setValueAt("0", c, 3);
         jTIngresos.setValueAt("******", c, 4);
-        
+
     }
-        
 
     public void Barra(int rafaga, int residuo) { //Calcula porcentaje de la barra y su progreso
         int Rafaga = rafaga;
