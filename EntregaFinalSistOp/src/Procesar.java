@@ -21,7 +21,9 @@ import javax.swing.table.DefaultTableModel;
 public class Procesar extends javax.swing.JFrame {
 
     int listaProcesosBloqueados[];
+    int listaProcesosPrioridad[];
     int Contador;//Contador del total de procesos que se van ingresando
+    int contadorProcesosPrioridad;
     int NProceso;//Carga el número de procesos ejecutándose
     int Rafaga = 0;//Carga la ráfaga en ejecución
     int Quantum = 0;//Carga el quantum en ejecución
@@ -72,9 +74,8 @@ public class Procesar extends javax.swing.JFrame {
         jTFCapturaQuantum = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jTFCapturaRafaga = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         jBIniciar = new javax.swing.JButton();
-        bloc = new javax.swing.JTextField();
+        block = new javax.swing.JTextField();
         blockear = new javax.swing.JButton();
         blockear1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -90,7 +91,9 @@ public class Procesar extends javax.swing.JFrame {
         jLPorcentajeProceso = new javax.swing.JTextField();
         jLNumeroProceso = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        SetPrioridad = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -119,7 +122,6 @@ public class Procesar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -138,14 +140,14 @@ public class Procesar extends javax.swing.JFrame {
                 jBAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, -1, -1));
+        getContentPane().add(jBAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 52, -1, 20));
 
         jTIngresos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "#Proceso", "Rafaga", "Quantum", "ResiduoRafaga", "Estado"
+                "#Proceso", "Prioridad", "Rafaga", "Quantum", "ResiduoRafaga", "Estado"
             }
         ));
         jTIngresos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -179,11 +181,6 @@ public class Procesar extends javax.swing.JFrame {
         });
         getContentPane().add(jTFCapturaRafaga, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 114, -1));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("        LISTA DE PROCESOS");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 265, 29));
-
         jBIniciar.setForeground(new java.awt.Color(255, 255, 255));
         jBIniciar.setText("Iniciar");
         jBIniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +189,7 @@ public class Procesar extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jBIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 115, -1));
-        getContentPane().add(bloc, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 79, -1));
+        getContentPane().add(block, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 79, -1));
 
         blockear.setForeground(new java.awt.Color(255, 255, 255));
         blockear.setText("Bloquear");
@@ -295,11 +292,24 @@ public class Procesar extends javax.swing.JFrame {
         jLabel7.setText("Proceso");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 300, -1, -1));
 
+        SetPrioridad.setText("Set Prioridad");
+        SetPrioridad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SetPrioridadActionPerformed(evt);
+            }
+        });
+        jPanel1.add(SetPrioridad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, -1, -1));
+
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/red puntos.png"))); // NOI18N
         jLabel8.setMaximumSize(new java.awt.Dimension(100, 100));
         jLabel8.setMinimumSize(new java.awt.Dimension(100, 100));
         jLabel8.setPreferredSize(new java.awt.Dimension(100, 100));
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1080, 720));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("        LISTA DE PROCESOS");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 265, 29));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1080, 720));
 
@@ -308,15 +318,17 @@ public class Procesar extends javax.swing.JFrame {
     public void tamanioBloqueadosES() {
         String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo(".\\src\\Procesos.txt");
         int cantProcesosBloc = 0;
+        int contProcesosprior=0;
         for (String string : clavesInsertar) {
             String proceso[] = new String[2];
             proceso = string.split(",");
             if (proceso[1].contains("1")) {
                 cantProcesosBloc++;
             }
+            contProcesosprior++;
         }
         listaProcesosBloqueados = new int[cantProcesosBloc];
-        System.out.println(listaProcesosBloqueados.length);
+        listaProcesosPrioridad = new int[contProcesosprior];
     }
     public void redimensionar(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();        
@@ -389,12 +401,12 @@ public class Procesar extends javax.swing.JFrame {
         int row = jTIngresos.getSelectedRow();
         System.out.println(row);
         String id = String.valueOf(jTIngresos.getValueAt(row, 0));
-        bloc.setText(id);
+        block.setText(id);
     }//GEN-LAST:event_jTIngresosMouseClicked
 
     private void blockearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockearActionPerformed
         Dormir();
-        String numeroProceso = bloc.getText();
+        String numeroProceso = block.getText();
         jTIngresos.setValueAt("Bloqueado", Integer.parseInt(numeroProceso) - 1, 4);
         
         
@@ -404,11 +416,20 @@ public class Procesar extends javax.swing.JFrame {
 
     private void blockear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockear1ActionPerformed
         Dormir();
-        String numeroProceso = bloc.getText();
+        String numeroProceso = block.getText();
         if (jTIngresos.getValueAt(Integer.parseInt(numeroProceso) - 1, 4) == "Bloqueado") {
             jTIngresos.setValueAt("Listo", Integer.parseInt(numeroProceso) - 1, 4);
         }
     }//GEN-LAST:event_blockear1ActionPerformed
+
+    private void SetPrioridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetPrioridadActionPerformed
+    //    String prioridadPrevia = block.getText();
+    //    String proximaPrioridad = JOptionPane.showInputDialog("Coloque una prioridad al proceso, maximo "+
+     //           listaProcesosPrioridad.length);
+     //   jTIngresos.setValueAt(proximaPrioridad, Integer.parseInt(prioridadPrevia)-1, 1);
+     //   jTIngresos.setValueAt(prioridadPrevia, Integer.parseInt(proximaPrioridad)-1, 1);
+        
+    }//GEN-LAST:event_SetPrioridadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -610,15 +631,16 @@ public class Procesar extends javax.swing.JFrame {
     public void Ingresar(String numeroProceso, String rafaga) { //Ingresar proceso a la tabla
 
         DefaultTableModel modelo = (DefaultTableModel) jTIngresos.getModel();
-        Contador++;
-        Object[] miTabla = new Object[5];
+        Contador++;        
+        Object[] miTabla = new Object[6];
         miTabla[0] = Contador;
-        miTabla[1] = rafaga;
+        miTabla[1] = Contador;
+        miTabla[2] = rafaga;
         LargoTotalTabla += Integer.parseInt(rafaga);
         CantProcesos++;
-        miTabla[2] = jTFCapturaQuantum.getText();
-        miTabla[3] = rafaga;
-        miTabla[4] = "Listo";
+        miTabla[3] = jTFCapturaQuantum.getText();
+        miTabla[4] = rafaga;
+        miTabla[5] = "Listo";
         modelo.addRow(miTabla);
         jTIngresos.setModel(modelo);
         
@@ -675,7 +697,8 @@ public class Procesar extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField bloc;
+    private javax.swing.JButton SetPrioridad;
+    private javax.swing.JTextField block;
     private javax.swing.JButton blockear;
     private javax.swing.JButton blockear1;
     private javax.swing.JButton jBAgregar;
