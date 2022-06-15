@@ -499,11 +499,19 @@ public class Procesar extends javax.swing.JFrame {
         public void run() {
             int estado = 1; //Estado de while que indica si se puede seguir o no
             int i = 0; // contador de while
+            int j =0;
             Grafica grafica = new Grafica();
-
+            
+                
             while (estado != 0) {
+                
                 while (i < Contador) { //Recorrer las filas
-                    Cargar(i);
+                 j = Integer.parseInt(jTIngresos.getValueAt(i, 1).toString());
+                 if(j!=i){
+                     i++;
+                 }
+                 Cargar(i);
+                    
                     if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum && jTIngresos.getValueAt(i, 4) != "Bloqueado") { //Ejecutando Procesos
                         for (int c = 1; c <= Quantum; c++) {
                             if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
@@ -562,10 +570,10 @@ public class Procesar extends javax.swing.JFrame {
                     }
                     jLNumeroProceso.setText(String.valueOf("")); //Borrar contenido
                     jLPorcentajeProceso.setText(String.valueOf(""));
-                    i++;
-
+                    //i++;
+                    
                 }
-                i = 0;
+                //i = 0;
                 jLNumeroProceso.setText(String.valueOf("")); //Borrar contenido
                 jLPorcentajeProceso.setText(String.valueOf(""));
 
@@ -616,9 +624,9 @@ public class Procesar extends javax.swing.JFrame {
         if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
 
             NProceso = (int) jTIngresos.getValueAt(i, 0);
-            Rafaga = parseInt((String) (jTIngresos.getValueAt(i, 1)));
-            Quantum = parseInt((String) (jTIngresos.getValueAt(i, 2)));
-            ResiduoRafaga = parseInt((String) (jTIngresos.getValueAt(i, 3)));
+            Rafaga = Integer.parseInt(jTIngresos.getValueAt(i, 1).toString());
+            Quantum = Integer.parseInt(jTFCapturaQuantum.getText()); ///(int)  jTIngresos.getValueAt(i, 2);
+            ResiduoRafaga = Integer.parseInt(jTIngresos.getValueAt(i, 3).toString());
             if (NProceso > 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
                 jLNumeroProceso.setText(String.valueOf(NProceso));
             }
