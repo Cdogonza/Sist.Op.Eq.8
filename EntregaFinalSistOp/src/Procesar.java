@@ -45,6 +45,8 @@ public class Procesar extends javax.swing.JFrame {
         redimensionar();
         tamanioBloqueadosES();
         this.setLocationRelativeTo(null);
+        Color x = new Color(63,51,30);
+        jPanel2.setBackground(x);
         jTIngresos.setBackground(Color.CYAN);
         jTIngresos.setForeground(Color.blue);
         jTFinal.setBackground(Color.GREEN);
