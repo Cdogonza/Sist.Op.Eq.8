@@ -32,19 +32,31 @@ public class Grafica extends JPanel{
         
     }
     public void Dibujar(int i, JPanel p,int tamMax, int cantProcesos){
-        a += 40;
-        x += 1000/tamMax;
+        int resol = 0;
+        if (tamMax >=300){
+            resol = tamMax*3;
+        }else {
+            resol = 1000;
+        }
+        
+        x += resol/tamMax;
         y = 310 - ((i+1) * (290/cantProcesos));
-        tamx += 1000/tamMax;
+        int y1= 310 - (i * (290/cantProcesos));
+        tamx += Math.round(resol/tamMax);
+        
+        System.out.println(tamx);
         Graphics g = p.getGraphics();
+        
         paint(g);
         cambiaColor(i, g);
-        g.fillRect(  x, y, tamx , (240/cantProcesos));
+        g.fillRect(  (20+x), y-10, tamx , (240/cantProcesos));
+        i+= 1;
+        g.drawString(("P" + i), 0, ((y-10) + y1)/2);
+        
         p.revalidate();
         Color x = new Color(63,51,30);
         p.setBackground(x);
         tamx = 0;
-        
     }
 
     private static HashMap<Integer, Color> colores;
