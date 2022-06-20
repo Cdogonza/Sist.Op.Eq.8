@@ -2,12 +2,9 @@
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import static java.lang.Integer.parseInt;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +42,7 @@ public class Procesar extends javax.swing.JFrame {
     Random rnd = new Random();
     private ImageIcon imagen; 
     private Icon icono; 
-
+    int estado = 1;
     public Procesar() {
         initComponents();
         tamanioBloqueadosES();
@@ -137,7 +134,6 @@ public class Procesar extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1280, 730));
         setMinimumSize(new java.awt.Dimension(1280, 730));
-        setPreferredSize(new java.awt.Dimension(1280, 730));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -272,7 +268,7 @@ public class Procesar extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTIngresos);
 
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 530, 170));
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 530, 190));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -330,7 +326,7 @@ public class Procesar extends javax.swing.JFrame {
         jTFinal.setEnabled(false);
         jScrollPane4.setViewportView(jTFinal);
 
-        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 450, 133));
+        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 410, 133));
 
         imagen2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imagen2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/FONDO.png"))); // NOI18N
@@ -517,7 +513,7 @@ public class Procesar extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            int estado = 1; //Estado de while que indica si se puede seguir o no
+             //Estado de while que indica si se puede seguir o no
             int i = 0; // contador de while
             Grafica grafica = new Grafica();
             
