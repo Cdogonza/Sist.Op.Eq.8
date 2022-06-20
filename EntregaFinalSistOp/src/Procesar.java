@@ -13,7 +13,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.JButton;
-import javax.swing.JLabel; 
+import javax.swing.JLabel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,7 +22,7 @@ import javax.swing.JLabel;
  */
 public class Procesar extends javax.swing.JFrame {
 
-    int listaProcesosBloqueados[];
+    int listaProcesosBloqueados[];//Se utiliza para agregar los procesos que se bloquean por E/S
     int Contador;//Contador del total de procesos que se van ingresando
     int NProceso;//Carga el número de procesos ejecutándose
     int Rafaga = 0;//Carga la ráfaga en ejecución
@@ -31,8 +31,8 @@ public class Procesar extends javax.swing.JFrame {
     int TiempoProceso = 0;//Carga el tiempo que se dura procesando
     int ValorBarra;//Carga el progreso de la Barra
     int CantidadProcesos;//Número de procesos terminados
-    boolean bloquear = true;
-    boolean desbloquear = false;
+    boolean bloquear = true;//Estado de los procesos 
+    boolean desbloquear = false;//Estado de los procesos 
     int procesosAEjecutarse;
     long tiempoInicio;
     long tiempoBase;
@@ -40,29 +40,28 @@ public class Procesar extends javax.swing.JFrame {
     static int LargoTotalTabla;//Valor Total de los tiempos para dibujar tablas
     static int CantProcesos;//Cantidad de Procesos
     Random rnd = new Random();
-    private ImageIcon imagen; 
-    private Icon icono; 
+    private ImageIcon imagen;
+    private Icon icono;
     int estado = 1;
+
     public Procesar() {
         initComponents();
         tamanioBloqueadosES();
         this.setLocationRelativeTo(null);
-        Color x = new Color(63,51,30);
+        Color x = new Color(63, 51, 30);
         jTIngresos.setBackground(Color.CYAN);
         jTIngresos.setForeground(Color.blue);
         jTFinal.setBackground(Color.GREEN);
         jTFCapturaQuantum.grabFocus();
-        setTitle("Sistemas Operativos Obligatorio"); 
+        setTitle("Sistemas Operativos Obligatorio");
         this.setLocationRelativeTo(this);
-        this.pintarImagen(this.imagen3,  ".\\src\\Imagen\\Imagen7.png");
+        this.pintarImagen(this.imagen3, ".\\src\\Imagen\\Imagen7.png");
         jBAgregar.setIcon(setIcono("/Imagen/Cargar procesos.png", jBAgregar));
         jBIniciar.setIcon(setIcono("/Imagen/Iniciar.png", jBIniciar));
         blockear.setIcon(setIcono("/Imagen/Bloquear.png", blockear));
-        blockear1.setIcon(setIcono("/Imagen/Desbloquear.png", blockear1));
-               
+        desbloc.setIcon(setIcono("/Imagen/Desbloquear.png", desbloc));
+
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,14 +88,13 @@ public class Procesar extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLNumeroProceso = new javax.swing.JTextField();
         blockear = new javax.swing.JButton();
-        blockear1 = new javax.swing.JButton();
+        desbloc = new javax.swing.JButton();
         jBAgregar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTIngresos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jBIniciar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        bloc = new javax.swing.JTextField();
         jTFCapturaQuantum = new javax.swing.JTextField();
         jTFCapturaRafaga = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -104,6 +102,7 @@ public class Procesar extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTFinal = new javax.swing.JTable();
         imagen2 = new javax.swing.JLabel();
+        bloc = new javax.swing.JTextField();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -221,15 +220,15 @@ public class Procesar extends javax.swing.JFrame {
                 blockearActionPerformed(evt);
             }
         });
-        jPanel1.add(blockear, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 120, 40));
+        jPanel1.add(blockear, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 130, 40));
 
-        blockear1.setForeground(new java.awt.Color(255, 255, 255));
-        blockear1.addActionListener(new java.awt.event.ActionListener() {
+        desbloc.setForeground(new java.awt.Color(255, 255, 255));
+        desbloc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blockear1ActionPerformed(evt);
+                desblocActionPerformed(evt);
             }
         });
-        jPanel1.add(blockear1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 130, 40));
+        jPanel1.add(desbloc, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 130, 40));
 
         jBAgregar.setForeground(new java.awt.Color(255, 255, 255));
         jBAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -286,7 +285,6 @@ public class Procesar extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 1020, 300));
-        jPanel1.add(bloc, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 79, -1));
 
         jTFCapturaQuantum.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jTFCapturaQuantum.addActionListener(new java.awt.event.ActionListener() {
@@ -335,6 +333,7 @@ public class Procesar extends javax.swing.JFrame {
         imagen2.setMinimumSize(new java.awt.Dimension(1280, 730));
         imagen2.setPreferredSize(new java.awt.Dimension(1280, 730));
         jPanel1.add(imagen2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 730));
+        jPanel1.add(bloc, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 79, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 730));
 
@@ -351,14 +350,11 @@ public class Procesar extends javax.swing.JFrame {
             }
         }
         listaProcesosBloqueados = new int[cantProcesosBloc];
-        System.out.println(listaProcesosBloqueados.length);
     }
-    public void redimensionar(){
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();        
-        this.setSize( screenSize.width, screenSize.height);
-        
-    }
+
     private void jBAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarActionPerformed
+        //Metodo que lee un archivo txt de procesos y los carga a la tabla donde van a ser posteriormente
+        //ejecutados por el planificador
         if (jTFCapturaQuantum.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un Quantum");
         } else {
@@ -393,10 +389,13 @@ public class Procesar extends javax.swing.JFrame {
     }//GEN-LAST:event_jTFCapturaRafagaActionPerformed
 
     private void jBIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarActionPerformed
+        //Este metodo inicia el planificador y los dos hilos que ejecuta el sistema
+        //un hilo para el planificador en si y otro hilo para el bloqueo de los procesos que 
+        //se bloquean por entrada y salida
+
         tiempoBase = System.currentTimeMillis();
         new Thread(new Hilo()).start(); //Crea un nuevo hilo
         new Thread(new HiloTiempo()).start();
-        Iniciar();
     }//GEN-LAST:event_jBIniciarActionPerformed
 
     private void jTFCapturaQuantumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFCapturaQuantumActionPerformed
@@ -420,7 +419,8 @@ public class Procesar extends javax.swing.JFrame {
     }//GEN-LAST:event_jLPorcentajeProcesoActionPerformed
 
     private void jTIngresosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTIngresosMouseClicked
-//        Dormir();
+        //Este metodo captura el numero del proceso y lo guarda en JTxtfield para poder 
+        //bloquearlo o desbloquearlo
         int row = jTIngresos.getSelectedRow();
         System.out.println(row);
         String id = String.valueOf(jTIngresos.getValueAt(row, 0));
@@ -428,22 +428,21 @@ public class Procesar extends javax.swing.JFrame {
     }//GEN-LAST:event_jTIngresosMouseClicked
 
     private void blockearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockearActionPerformed
+        //Con este boton bloqueamos el proceso de forma manueal, lo que seria 
+        //Bloqueo por usuario
         Dormir();
         String numeroProceso = bloc.getText();
         jTIngresos.setValueAt("Bloqueado", Integer.parseInt(numeroProceso) - 1, 4);
-        
-        
-     
-        
     }//GEN-LAST:event_blockearActionPerformed
 
-    private void blockear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockear1ActionPerformed
+    private void desblocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desblocActionPerformed
+        //Este boton desbloquea el proceso seleccionado de la tabla de procesos
         Dormir();
         String numeroProceso = bloc.getText();
         if (jTIngresos.getValueAt(Integer.parseInt(numeroProceso) - 1, 4) == "Bloqueado") {
             jTIngresos.setValueAt("Listo", Integer.parseInt(numeroProceso) - 1, 4);
         }
-    }//GEN-LAST:event_blockear1ActionPerformed
+    }//GEN-LAST:event_desblocActionPerformed
 
     private void jBAgregarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarMousePressed
         // TODO add your handling code here:
@@ -487,19 +486,22 @@ public class Procesar extends javax.swing.JFrame {
 
     private class HiloTiempo implements Runnable {
 
+        //Este hilo lo que hace es bloquear y desbloquear los procesos que se bloquean por espera de 
+        //entrada y salida. toma un tiempo y en funcion de las variables booleanas para los estados
+        //de los procesos, los bloquea o desbloquea respectivamente
         @Override
         public void run() {
             while (true) {
                 while (bloquear) {
-                    tiempoInicio = System.currentTimeMillis();                   
-                    tiempoFin = (int)(rnd.nextDouble() * 6500 + 3000);                   
-                    if (tiempoInicio - tiempoBase >= tiempoFin) {                       
+                    tiempoInicio = System.currentTimeMillis();
+                    tiempoFin = (int) (rnd.nextDouble() * 6500 + 3000);
+                    if (tiempoInicio - tiempoBase >= tiempoFin) {
                         bloqueoEntradaSalida();
                     }
-                }              
-                while (desbloquear) {                    
+                }
+                while (desbloquear) {
                     tiempoInicio = System.currentTimeMillis();
-                    tiempoFin = (int)(rnd.nextDouble() * 6500 + 3000);                   
+                    tiempoFin = (int) (rnd.nextDouble() * 6500 + 3000);
                     if (tiempoInicio - tiempoBase >= tiempoFin) {
                         desbloqueoEntradaSalida();
                     }
@@ -513,26 +515,27 @@ public class Procesar extends javax.swing.JFrame {
 
         @Override
         public void run() {
-             //Estado de while que indica si se puede seguir o no
-            int i = 0; // contador de while
+            //En las lineas subsiguientes se ejecuta el recorrido de la tabla de procesos y en funcion de el valor
+            //del quantum, el residuo que le va quedando a cada proceso, va ejecutando proceso por proceso a no ser que 
+            //esten bloqueados, hasta terminar la lista de procesos.
+            int i = 0;
             Grafica grafica = new Grafica();
-            
             while (estado != 0) {
-                while (i < Contador) { //Recorrer las filas
+                while (i < Contador) { //Recorrer las filas de la tabla procesos
                     Cargar(i);
-                    if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum && jTIngresos.getValueAt(i, 4) != "Bloqueado") { //Ejecutando Procesos
+                    if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum) { //Ejecutando Procesos
                         for (int c = 1; c <= Quantum; c++) {
-                            if(jTIngresos.getValueAt(i, 4)!= "Bloqueado"){
-                                                       
-                            grafica.Dibujar(i, jPanel2,LargoTotalTabla, CantProcesos);
-                            jTIngresos.setValueAt("Procesando", i, 4);
-                            ResiduoRafaga--;
-                            Barra(Rafaga, ResiduoRafaga);
-                            Pintar();
-                            jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
-                            TiempoProceso++;
-                            Dormir();
-                             }
+                            if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+
+                                grafica.Dibujar(i, jPanel2, LargoTotalTabla, CantProcesos);
+                                jTIngresos.setValueAt("Procesando", i, 4);
+                                ResiduoRafaga--;
+                                Barra(Rafaga, ResiduoRafaga);
+                                Pintar();
+                                jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
+                                TiempoProceso++;
+                                Dormir();
+                            }
                         }
                         jTIngresos.setValueAt("Espera", i, 4);
                         if (ResiduoRafaga == 0) {
@@ -543,20 +546,19 @@ public class Procesar extends javax.swing.JFrame {
                             jPBEstado.setValue(0);
                         }
                     } else {
-                        if (ResiduoRafaga > 0 && Quantum != 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+                        if (ResiduoRafaga > 0 && Quantum != 0) {
                             while (ResiduoRafaga > 0) {
-                                if(jTIngresos.getValueAt(i, 4) != "Bloqueado"){
-                                 
-                               
-                                grafica.Dibujar(i, jPanel2,LargoTotalTabla, CantProcesos );
-                                jTIngresos.setValueAt("Procesando", i, 4);
-                                ResiduoRafaga--;
-                                Barra(Rafaga, ResiduoRafaga);
-                                Pintar();
-                                jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
-                                TiempoProceso++;
-                                Dormir();
-                                 }
+                                if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+
+                                    grafica.Dibujar(i, jPanel2, LargoTotalTabla, CantProcesos);
+                                    jTIngresos.setValueAt("Procesando", i, 4);
+                                    ResiduoRafaga--;
+                                    Barra(Rafaga, ResiduoRafaga);
+                                    Pintar();
+                                    jTIngresos.setValueAt(String.valueOf(ResiduoRafaga), i, 3);
+                                    TiempoProceso++;
+                                    Dormir();
+                                }
                             }
                             jTIngresos.setValueAt("Espera", i, 4);
                             if (ResiduoRafaga == 0 && Quantum != 0) {
@@ -567,9 +569,8 @@ public class Procesar extends javax.swing.JFrame {
                                 jPBEstado.setValue(0);
                             }
                         } else {
-                            if (ResiduoRafaga == 0 && Quantum != 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+                            if (ResiduoRafaga == 0 && Quantum != 0) {
                                 jTIngresos.setValueAt("Terminado", i, 4);
-                                
                                 Pintar();
                                 Informe(i);
                                 Borrar(i);
@@ -580,74 +581,68 @@ public class Procesar extends javax.swing.JFrame {
                     jLNumeroProceso.setText(String.valueOf("")); //Borrar contenido
                     jLPorcentajeProceso.setText(String.valueOf(""));
                     i++;
-
                 }
                 i = 0;
                 jLNumeroProceso.setText(String.valueOf("")); //Borrar contenido
                 jLPorcentajeProceso.setText(String.valueOf(""));
-
             }
-
         }
     }
 
     public void bloqueoEntradaSalida() {
-        
+        //Metodo que pone en estado de bloqueado a los procesos que se bloquean por espera de entrada/salida
         for (int listaProcesosBloqueado : listaProcesosBloqueados) {
-           int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));          
-            if(listaProcesosBloqueado!=0 && raf>0){
-                 jTIngresos.setValueAt("Bloqueado", listaProcesosBloqueado - 1, 4);
+            int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));
+            if (listaProcesosBloqueado != 0 && raf > 0) {
+                jTIngresos.setValueAt("Bloqueado", listaProcesosBloqueado - 1, 4);
             }
-           
         }
         tiempoBase = System.currentTimeMillis();
-        bloquear = false;       
+        bloquear = false;
         desbloquear = true;
-
-
     }
 
     public void desbloqueoEntradaSalida() {
+        //Proceso inverso del metodo anterior, desbloquea los procesos que se encuentran bloqueados luego de pasado
+        //el tiempo de espera
         for (int listaProcesosBloqueado : listaProcesosBloqueados) {
             int raf = parseInt((String) (jTIngresos.getValueAt(listaProcesosBloqueado - 1, 3)));
-            if(listaProcesosBloqueado!=0&& raf>0){
-            jTIngresos.setValueAt("Listo", listaProcesosBloqueado - 1, 4);
+            if (listaProcesosBloqueado != 0 && raf > 0) {
+                jTIngresos.setValueAt("Esperando", listaProcesosBloqueado - 1, 4);
             }
         }
         tiempoBase = System.currentTimeMillis();
         bloquear = true;
         desbloquear = false;
 
-
     }
 
     public void Dormir() {
+        //Metodo que hace que el proceso de ejecucion de los procesos hace que podamos verlo 
+        //o sea nos permite verlo
         try {
-            Thread.sleep(100); //Dormir sistema
+            Thread.sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(Procesar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-
     public void Cargar(int i) { //Carga los valores de la Tabla
-
-        if(jTIngresos.getValueAt(i, 4) != "Bloqueado"){
-         
-        NProceso = (int) jTIngresos.getValueAt(i, 0);
-        Rafaga = parseInt((String) (jTIngresos.getValueAt(i, 1)));
-        Quantum = parseInt((String) (jTIngresos.getValueAt(i, 2)));
-        ResiduoRafaga = parseInt((String) (jTIngresos.getValueAt(i, 3)));
-        if (NProceso > 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
-            jLNumeroProceso.setText(String.valueOf(NProceso));
+        //Este metodo pone valor a las variables que utilizan los procesos
+        //Toma los valores de cada proceso que tiene la tabla y los guarda en la variable para 
+        //que desdpues sean utilizadas en la ejecucion de los procesos.
+        if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+            NProceso = (int) jTIngresos.getValueAt(i, 0);
+            Rafaga = parseInt((String) (jTIngresos.getValueAt(i, 1)));
+            Quantum = parseInt((String) (jTIngresos.getValueAt(i, 2)));
+            ResiduoRafaga = parseInt((String) (jTIngresos.getValueAt(i, 3)));
+            if (NProceso > 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
+                jLNumeroProceso.setText(String.valueOf(NProceso));
+            }
         }
-         }
-
     }
-
-    public void Ingresar(String numeroProceso, String rafaga) { //Ingresar proceso a la tabla
-
+    public void Ingresar(String numeroProceso, String rafaga) { 
+       //Ingresa los procesos a la tabla de procesos a ejecutarse
         DefaultTableModel modelo = (DefaultTableModel) jTIngresos.getModel();
         Contador++;
         Object[] miTabla = new Object[5];
@@ -660,11 +655,11 @@ public class Procesar extends javax.swing.JFrame {
         miTabla[4] = "Listo";
         modelo.addRow(miTabla);
         jTIngresos.setModel(modelo);
-        
-
     }
 
     public void Informe(int c) {
+        //Una vez terminado cada proceso de ejecutarse, se ingresa a la tabla de informe llenandose asi 
+        //esta tabla hasta que se completen con la totalidad de los procesos ejecutados
         DefaultTableModel modelo2 = (DefaultTableModel) jTFinal.getModel();
         Object[] miTabla = new Object[5];
         miTabla[0] = c + 1;
@@ -677,21 +672,19 @@ public class Procesar extends javax.swing.JFrame {
         CantidadProcesos++;
         jLCantidadProcesos.setText(String.valueOf(CantidadProcesos + " Terminados"));
         jLCantidadTiempo.setText(String.valueOf(TiempoProceso + " Segundos"));
-
     }
 
-    public void Borrar(int c) { //Elimina los registros de la tabla procesos
+    public void Borrar(int c) { 
+        //Elimina los registros de la tabla procesos una vez terminado de ejecutarse por completo
         jTIngresos.setValueAt(0, c, 0);
         jTIngresos.setValueAt("0", c, 1);
         jTIngresos.setValueAt("0", c, 2);
         jTIngresos.setValueAt("0", c, 3);
         jTIngresos.setValueAt("******", c, 4);
-        
     }
-        
 
-    public void Barra(int rafaga, int residuo) { //Calcula porcentaje de la barra y su progreso
-        int Rafaga = rafaga;
+    public void Barra(int rafaga, int residuo) { 
+        //Calcula porcentaje de la barra y su progreso
         int valor = 100 / rafaga;
         int porcentaje = 100 - (valor * residuo);
         ValorBarra = porcentaje;
@@ -699,41 +692,30 @@ public class Procesar extends javax.swing.JFrame {
     }
 
     public void Pintar() {
+        //Setea el valor de la barra acorde al porcentaje de ejecucion de cada proceso
         jPBEstado.setValue(ValorBarra);
         jPBEstado.repaint();
     }
-
-    public void Iniciar() { //Inicia la secuencia de procesos
-        /*  jLabel2.setVisible(false);
-        jLabel1.setVisible(false);
-        jTFCapturaRafaga.setVisible(false);
-        jTFCapturaQuantum.setVisible(false);
-        jBAgregar.setVisible(false);
-        jBIniciar.setVisible(false);*/
-    }
-
-     private void pintarImagen(JLabel lbl, String ruta){
-        this.imagen= new ImageIcon(ruta); 
-        this.icono= new ImageIcon(this.imagen.getImage().getScaledInstance(lbl.getWidth(), lbl.getHeight(), Image.SCALE_AREA_AVERAGING));
+    private void pintarImagen(JLabel lbl, String ruta) {
+        this.imagen = new ImageIcon(ruta);
+        this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(lbl.getWidth(), lbl.getHeight(), Image.SCALE_AREA_AVERAGING));
         lbl.setIcon(this.icono);
-        this.repaint(); 
+        this.repaint();
     }
-    
-     public Icon setIcono(String url, JButton boton){
-         ImageIcon icon= new ImageIcon(getClass().getResource(url)); 
-         int ancho= boton.getWidth(); 
-         int alto = boton.getHeight(); 
-         ImageIcon icono= new ImageIcon(icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT)); 
-         
-         return icono; 
-     }
- 
-    
+
+    public Icon setIcono(String url, JButton boton) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(url));
+        int ancho = boton.getWidth();
+        int alto = boton.getHeight();
+        ImageIcon icono = new ImageIcon(icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));
+
+        return icono;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bloc;
     private javax.swing.JButton blockear;
-    private javax.swing.JButton blockear1;
+    private javax.swing.JButton desbloc;
     private javax.swing.JLabel imagen2;
     private javax.swing.JLabel imagen3;
     private javax.swing.JButton jBAgregar;
