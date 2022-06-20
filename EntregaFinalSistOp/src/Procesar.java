@@ -302,7 +302,7 @@ public class Procesar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void tamanioBloqueadosES() {
-        String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo(".\\src\\Procesos.txt");
+        String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo("..\\\\src\\Procesos.txt");
         int cantProcesosBloc = 0;
         for (String string : clavesInsertar) {
             String proceso[] = new String[2];
@@ -320,7 +320,7 @@ public class Procesar extends javax.swing.JFrame {
         if (jTFCapturaQuantum.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un Quantum");
         } else {
-            String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo(".\\src\\Procesos.txt");
+            String clavesInsertar[] = ManejadorArchivosGenerico.leerArchivo("..\\\\src\\Procesos.txt");
             String proceso[] = new String[2];
             int numeroProcesos = 0;
             int cont = 0;
