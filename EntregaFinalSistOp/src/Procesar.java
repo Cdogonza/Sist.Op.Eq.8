@@ -158,10 +158,10 @@ public class Procesar extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 730));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPBEstado.setBackground(java.awt.SystemColor.textHighlight);
+        jPBEstado.setBackground(java.awt.SystemColor.GREEN);
         jPBEstado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPBEstado.setForeground(new java.awt.Color(123, 255, 0));
-        jPBEstado.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 255)));
+        jPBEstado.setForeground(new java.awt.Color(255, 125, 0));
+        jPBEstado.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(243, 225, 255)));
         jPanel1.add(jPBEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 340, 340, 21));
 
         imagen3.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
@@ -627,8 +627,11 @@ public class Procesar extends javax.swing.JFrame {
 
     public void Pintar() {
         //Setea el valor de la barra acorde al porcentaje de ejecucion de cada proceso
+        
         jPBEstado.setValue(ValorBarra);
         jPBEstado.repaint();
+        Color barra = new Color(125,255,120);
+        jPBEstado.setBackground(barra);
     }
 
     private void pintarImagen(JLabel lbl, String ruta) {
