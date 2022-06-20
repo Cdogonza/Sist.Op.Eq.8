@@ -48,19 +48,15 @@ public class Procesar extends javax.swing.JFrame {
 
     public Procesar() {
         initComponents();
-        this.setExtendedState(this.MAXIMIZED_BOTH);
-        //redimensionar();
         tamanioBloqueadosES();
         this.setLocationRelativeTo(null);
         Color x = new Color(63,51,30);
-        //jPanel2.setBackground(x);
         jTIngresos.setBackground(Color.CYAN);
         jTIngresos.setForeground(Color.blue);
         jTFinal.setBackground(Color.GREEN);
         jTFCapturaQuantum.grabFocus();
         setTitle("Sistemas Operativos Obligatorio"); 
         this.setLocationRelativeTo(this);
-        this.pintarImagen(this.imagen2, ".\\src\\Imagen\\FONDO.png");
         this.pintarImagen(this.imagen3,  ".\\src\\Imagen\\Imagen7.png");
         jBAgregar.setIcon(setIcono("/Imagen/Cargar procesos.png", jBAgregar));
         jBIniciar.setIcon(setIcono("/Imagen/Iniciar.png", jBIniciar));
@@ -139,7 +135,9 @@ public class Procesar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1800, 720));
+        setMaximumSize(new java.awt.Dimension(1280, 730));
+        setMinimumSize(new java.awt.Dimension(1280, 730));
+        setPreferredSize(new java.awt.Dimension(1280, 730));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -173,12 +171,14 @@ public class Procesar extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1280, 730));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1280, 730));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1280, 730));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPBEstado.setBackground(java.awt.SystemColor.textHighlight);
         jPBEstado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPBEstado.setForeground(new java.awt.Color(158, 255, 0));
+        jPBEstado.setForeground(new java.awt.Color(123, 255, 0));
         jPBEstado.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 255)));
         jPanel1.add(jPBEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 340, 340, 21));
 
@@ -255,7 +255,15 @@ public class Procesar extends javax.swing.JFrame {
             new String [] {
                 "#Proceso", "Rafaga", "Quantum", "ResiduoRafaga", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTIngresos.setSelectionBackground(new java.awt.Color(102, 255, 102));
         jTIngresos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -325,10 +333,14 @@ public class Procesar extends javax.swing.JFrame {
         jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 450, 133));
 
         imagen2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagen2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagen/FONDO.png"))); // NOI18N
         imagen2.setText("jLabel8");
-        jPanel1.add(imagen2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1380, 740));
+        imagen2.setMaximumSize(new java.awt.Dimension(1280, 730));
+        imagen2.setMinimumSize(new java.awt.Dimension(1280, 730));
+        imagen2.setPreferredSize(new java.awt.Dimension(1280, 730));
+        jPanel1.add(imagen2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 730));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1800, 800));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
