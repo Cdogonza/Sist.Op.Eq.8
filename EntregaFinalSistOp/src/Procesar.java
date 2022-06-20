@@ -1,8 +1,5 @@
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import static java.lang.Integer.parseInt;
 import java.util.Random;
@@ -143,20 +140,10 @@ public class Procesar extends javax.swing.JFrame {
 
         jLCantidadProcesos.setEditable(false);
         jLCantidadProcesos.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLCantidadProcesos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jLCantidadProcesosActionPerformed(evt);
-            }
-        });
         getContentPane().add(jLCantidadProcesos, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 70, 118, -1));
 
         jLCantidadTiempo.setEditable(false);
         jLCantidadTiempo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLCantidadTiempo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jLCantidadTiempoActionPerformed(evt);
-            }
-        });
         getContentPane().add(jLCantidadTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 100, 118, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -192,11 +179,6 @@ public class Procesar extends javax.swing.JFrame {
 
         jLPorcentajeProceso.setEditable(false);
         jLPorcentajeProceso.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLPorcentajeProceso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jLPorcentajeProcesoActionPerformed(evt);
-            }
-        });
         jPanel1.add(jLPorcentajeProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 340, 53, -1));
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -207,11 +189,6 @@ public class Procesar extends javax.swing.JFrame {
 
         jLNumeroProceso.setEditable(false);
         jLNumeroProceso.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLNumeroProceso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jLNumeroProcesoActionPerformed(evt);
-            }
-        });
         jPanel1.add(jLNumeroProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 41, -1));
 
         blockear.setForeground(new java.awt.Color(255, 255, 255));
@@ -231,11 +208,6 @@ public class Procesar extends javax.swing.JFrame {
         jPanel1.add(desbloc, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 130, 40));
 
         jBAgregar.setForeground(new java.awt.Color(255, 255, 255));
-        jBAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jBAgregarMousePressed(evt);
-            }
-        });
         jBAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAgregarActionPerformed(evt);
@@ -280,27 +252,17 @@ public class Procesar extends javax.swing.JFrame {
                 jBIniciarActionPerformed(evt);
             }
         });
-        jPanel1.add(jBIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, 120, 40));
+        jPanel1.add(jBIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, 150, 40));
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 1020, 300));
 
         jTFCapturaQuantum.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTFCapturaQuantum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFCapturaQuantumActionPerformed(evt);
-            }
-        });
         jPanel1.add(jTFCapturaQuantum, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 79, -1));
 
         jTFCapturaRafaga.setEditable(false);
         jTFCapturaRafaga.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTFCapturaRafaga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFCapturaRafagaActionPerformed(evt);
-            }
-        });
         jPanel1.add(jTFCapturaRafaga, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 114, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -369,7 +331,6 @@ public class Procesar extends javax.swing.JFrame {
                 proceso = string.split(",");
                 Procesos nuevoProceso = new Procesos(Integer.parseInt(proceso[0]), Integer.parseInt(proceso[1]));
                 if (nuevoProceso.isBloqueoPorEntradaSalida()) {
-
                     listaProcesosBloqueados[cont] = numeroProcesos;
                     cont++;
                     System.out.println("bloqueado pors Entrada y salida el proceso " + numeroProcesos);
@@ -380,49 +341,21 @@ public class Procesar extends javax.swing.JFrame {
 
             }
         }
-
-
     }//GEN-LAST:event_jBAgregarActionPerformed
-
-    private void jTFCapturaRafagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFCapturaRafagaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTFCapturaRafagaActionPerformed
 
     private void jBIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarActionPerformed
         //Este metodo inicia el planificador y los dos hilos que ejecuta el sistema
         //un hilo para el planificador en si y otro hilo para el bloqueo de los procesos que 
         //se bloquean por entrada y salida
-
         tiempoBase = System.currentTimeMillis();
         new Thread(new Hilo()).start(); //Crea un nuevo hilo
         new Thread(new HiloTiempo()).start();
     }//GEN-LAST:event_jBIniciarActionPerformed
 
-    private void jTFCapturaQuantumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFCapturaQuantumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTFCapturaQuantumActionPerformed
-
-    private void jLCantidadProcesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLCantidadProcesosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLCantidadProcesosActionPerformed
-
-    private void jLCantidadTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLCantidadTiempoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLCantidadTiempoActionPerformed
-
-    private void jLNumeroProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLNumeroProcesoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLNumeroProcesoActionPerformed
-
-    private void jLPorcentajeProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLPorcentajeProcesoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLPorcentajeProcesoActionPerformed
-
     private void jTIngresosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTIngresosMouseClicked
         //Este metodo captura el numero del proceso y lo guarda en JTxtfield para poder 
         //bloquearlo o desbloquearlo
         int row = jTIngresos.getSelectedRow();
-        System.out.println(row);
         String id = String.valueOf(jTIngresos.getValueAt(row, 0));
         bloc.setText(id);
     }//GEN-LAST:event_jTIngresosMouseClicked
@@ -430,9 +363,12 @@ public class Procesar extends javax.swing.JFrame {
     private void blockearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockearActionPerformed
         //Con este boton bloqueamos el proceso de forma manueal, lo que seria 
         //Bloqueo por usuario
-        Dormir();
-        String numeroProceso = bloc.getText();
-        jTIngresos.setValueAt("Bloqueado", Integer.parseInt(numeroProceso) - 1, 4);
+        int row = jTIngresos.getSelectedRow();
+        if (Integer.parseInt(jTIngresos.getValueAt(row, 0).toString()) != 0) {
+            String numeroProceso = bloc.getText();
+            jTIngresos.setValueAt("Bloqueado", Integer.parseInt(numeroProceso) - 1, 4);
+        }
+
     }//GEN-LAST:event_blockearActionPerformed
 
     private void desblocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desblocActionPerformed
@@ -443,10 +379,6 @@ public class Procesar extends javax.swing.JFrame {
             jTIngresos.setValueAt("Listo", Integer.parseInt(numeroProceso) - 1, 4);
         }
     }//GEN-LAST:event_desblocActionPerformed
-
-    private void jBAgregarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBAgregarMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBAgregarMousePressed
 
     /**
      * @param args the command line arguments
@@ -523,7 +455,7 @@ public class Procesar extends javax.swing.JFrame {
             while (estado != 0) {
                 while (i < Contador) { //Recorrer las filas de la tabla procesos
                     Cargar(i);
-                    if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum) { //Ejecutando Procesos
+                    if (ResiduoRafaga != 0 && ResiduoRafaga > Quantum && jTIngresos.getValueAt(i, 4) != "Bloqueado") { //Ejecutando Procesos
                         for (int c = 1; c <= Quantum; c++) {
                             if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
 
@@ -546,7 +478,7 @@ public class Procesar extends javax.swing.JFrame {
                             jPBEstado.setValue(0);
                         }
                     } else {
-                        if (ResiduoRafaga > 0 && Quantum != 0) {
+                        if (ResiduoRafaga > 0 && Quantum != 0 && jTIngresos.getValueAt(i, 4) != "Bloqueado") {
                             while (ResiduoRafaga > 0) {
                                 if (jTIngresos.getValueAt(i, 4) != "Bloqueado") {
 
@@ -627,6 +559,7 @@ public class Procesar extends javax.swing.JFrame {
         }
 
     }
+
     public void Cargar(int i) { //Carga los valores de la Tabla
         //Este metodo pone valor a las variables que utilizan los procesos
         //Toma los valores de cada proceso que tiene la tabla y los guarda en la variable para 
@@ -641,8 +574,9 @@ public class Procesar extends javax.swing.JFrame {
             }
         }
     }
-    public void Ingresar(String numeroProceso, String rafaga) { 
-       //Ingresa los procesos a la tabla de procesos a ejecutarse
+
+    public void Ingresar(String numeroProceso, String rafaga) {
+        //Ingresa los procesos a la tabla de procesos a ejecutarse
         DefaultTableModel modelo = (DefaultTableModel) jTIngresos.getModel();
         Contador++;
         Object[] miTabla = new Object[5];
@@ -674,7 +608,7 @@ public class Procesar extends javax.swing.JFrame {
         jLCantidadTiempo.setText(String.valueOf(TiempoProceso + " Segundos"));
     }
 
-    public void Borrar(int c) { 
+    public void Borrar(int c) {
         //Elimina los registros de la tabla procesos una vez terminado de ejecutarse por completo
         jTIngresos.setValueAt(0, c, 0);
         jTIngresos.setValueAt("0", c, 1);
@@ -683,7 +617,7 @@ public class Procesar extends javax.swing.JFrame {
         jTIngresos.setValueAt("******", c, 4);
     }
 
-    public void Barra(int rafaga, int residuo) { 
+    public void Barra(int rafaga, int residuo) {
         //Calcula porcentaje de la barra y su progreso
         int valor = 100 / rafaga;
         int porcentaje = 100 - (valor * residuo);
@@ -696,6 +630,7 @@ public class Procesar extends javax.swing.JFrame {
         jPBEstado.setValue(ValorBarra);
         jPBEstado.repaint();
     }
+
     private void pintarImagen(JLabel lbl, String ruta) {
         this.imagen = new ImageIcon(ruta);
         this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(lbl.getWidth(), lbl.getHeight(), Image.SCALE_AREA_AVERAGING));
